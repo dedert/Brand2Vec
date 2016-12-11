@@ -33,14 +33,15 @@ def make_documents(sentence_list, brand_list, tagby, threshold = 10, min_count =
             documents.append(document)
     return documents, bigram
 
-def load_data(save_path, category_list):
+def load_data(save_path, category_list, tagby=True):
     # save_path = "E:/dataset/MasterThesis/FINAL/preprocess_data/"
     total = []
     for category in category_list:
         df = pd.read_csv(save_path + "preprocess_complete_" + category + ".csv")
         df['preprocessed'] = df.preprocessed.apply(lambda row: literal_eval(row))
         df_list, df_brands = sentence_list(df.sample(100000, random_state=42))
-        documents, bigram = make_documents(df_list, df_brands, tagby=True)
+        documents, bigram = make_documents(df_list, df_brands, tagby=tagby)
         print("%s category is finished" % category)
         total += documents
     return total
+
